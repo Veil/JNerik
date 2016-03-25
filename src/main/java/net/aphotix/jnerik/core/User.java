@@ -5,4 +5,11 @@ package net.aphotix.jnerik.core;
  */
 public interface User {
 
+    public String getNick();
+
+    public void setNick(String requestedNick);
+
+    public String getAddress();
+
+    public boolean isRemote();
 }

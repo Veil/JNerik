@@ -7,6 +7,6 @@ import java.util.List;
  */
 public interface Command {
 
-    public void execute(User user, List<String> args);
+    public void execute(User user, List<String> args, Responder responder);
 
 }

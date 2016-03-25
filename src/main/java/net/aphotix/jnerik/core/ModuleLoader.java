@@ -11,8 +11,8 @@ public class ModuleLoader {
     private final List<Module> loadedModules;
     private final ModuleConstructor constructor;
 
-    public ModuleLoader(CommandRegistry commands, FlagRegistry flags, ModeRegistry modes) {
-        constructor = new ModuleConstructor(commands, flags, modes);
+    public ModuleLoader(CommandRegistry commands, FlagRegistry flags, ModeRegistry modes, UserRegistry users) {
+        constructor = new ModuleConstructor(commands, flags, modes, users);
         this.loadedModules = new ArrayList<>();
     }
 
