@@ -7,6 +7,6 @@ public interface Event {
 
     public boolean isCancelled();
 
-    public boolean setCancelled(boolean cancel);
+    public void setCancelled(boolean cancel);
 
 }

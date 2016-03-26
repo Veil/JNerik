@@ -22,7 +22,7 @@ public class ModuleConstructor {
         }
     }
 
-    public Module construct(Class<Module> module) throws InstantiationException {
+    public Module construct(Class<? extends Module> module) throws InstantiationException {
         Constructor<?>[] constructors = module.getDeclaredConstructors();
 
         if (constructors.length != 1) {

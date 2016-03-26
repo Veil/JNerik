@@ -1,6 +1,9 @@
 package net.aphotix.jnerik.core;
 
+import net.aphotix.jnerik.modules.nick.NickModule;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -11,16 +14,17 @@ public class ModuleLoader {
     private final List<Module> loadedModules;
     private final ModuleConstructor constructor;
 
-    public ModuleLoader(CommandRegistry commands, FlagRegistry flags, ModeRegistry modes, UserRegistry users) {
-        constructor = new ModuleConstructor(commands, flags, modes, users);
+    public ModuleLoader(CommandRegistry commands, FlagRegistry flags, ModeRegistry modes, UserRegistry users,
+                        EventRegistry events) {
+        constructor = new ModuleConstructor(commands, flags, modes, users, events);
         this.loadedModules = new ArrayList<>();
     }
 
     public void loadModules() {
         // TODO Work out the best way to load modules either dynamically or specifically
-        List<Class<Module>> modules = new ArrayList<>();
+        List<Class<? extends Module>> modules = Arrays.asList(NickModule.class);
 
-        for (Class<Module> module : modules) {
+        for (Class<? extends Module> module : modules) {
 
             try {
                 Module newModule = constructor.construct(module);
