@@ -7,4 +7,6 @@ public interface CommandRegistry {
 
     public void register(String trigger, Command command);
 
+    public Command getCommandByName(String command);
+
 }
