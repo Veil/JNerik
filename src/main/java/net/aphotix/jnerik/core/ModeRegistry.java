@@ -1,8 +1,5 @@
 package net.aphotix.jnerik.core;
 
-import java.util.function.BiFunction;
-import java.util.function.Function;
-
 /**
  * A registry of valid modes that JNerik supports
  *
@@ -14,16 +11,32 @@ public interface ModeRegistry {
      * Register a new user mode
      *
      * @param mode The mode to register
-     * @param permit The function called to determine if a user can set the mode.
      */
-    public void registerUserMode(char mode, Function<User, Boolean> permit);
+    public void registerUserMode(UserMode mode);
 
     /**
      * Register a new channel mode
      *
      * @param mode The mode to register
-     * @param permit The function called to determine if a user can set the mode on the channel provided.
      */
-    public void registerChannelMode(char mode, BiFunction<User, Channel, Boolean> permit);
+    public void registerChannelMode(ChannelMode mode);
+
+    /**
+     * Gets the channel mode for the flag provided
+     *
+     * @param flag The flag to get the mode for
+     *
+     * @return {@link ChannelMode} The mode the flag matches or {@literal null} if no mode is found
+     */
+    public ChannelMode getChanMode(char flag);
+
+    /**
+     * Gets the user mode for the flag provided
+     *
+     * @param flag The flag to get the mode for
+     *
+     * @return {@link UserMode} The mode the flag matches or {@literal null} if no mode is found
+     */
+    public UserMode getUserMode(char flag);
 
 }
