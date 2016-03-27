@@ -1,6 +1,8 @@
 package net.aphotix.jnerik.core;
 
+import net.aphotix.jnerik.core.io.MessageChannel;
 import net.aphotix.jnerik.core.io.UserSessionResponder;
+import net.aphotix.jnerik.core.registry.MapBackedCommandRegistry;
 import net.aphotix.jnerik.mina.MinaAcceptor;
 import org.apache.mina.core.service.IoAcceptor;
 import org.apache.mina.core.session.IdleStatus;
@@ -18,35 +20,45 @@ import java.util.concurrent.Executors;
  *
  * @author Veil (nathan@aphotix.net).
  */
-public class JNerikIrcd {
+public class JNerikIRCd {
 
     public static void main(String[] args) throws IOException {
         // TODO Load some kind of config.
-        JNerikConfig config = new HardCodedConfig();
+        final JNerikConfig config = new HardCodedConfig();
 
-        UserSessionResponder userManagement = new UserSessionResponder(config);
+        final UserSessionResponder sessionResponder = new UserSessionResponder(config);
+        final UserRegistry users = sessionResponder.getUserRegistry();
 
-        final ModuleLoader modules = new ModuleLoader(null, null, null, null, null);
+        final CommandRegistry commands = new MapBackedCommandRegistry();
 
-        final MessageReader reader = new MessageReader(null, null, userManagement);
+        final ModuleLoader modules = new ModuleLoader(commands, null, null, users, null);
+
+        final MessageChannel channel = new QueueBackedMessageChannel();
+
+        final MessageReader reader = new MessageReader(commands, channel, sessionResponder);
 
         Executors.newFixedThreadPool(1).submit(reader);
 
         modules.loadModules();
 
+        startNetworkListeners(config, sessionResponder, channel);
+
+        modules.unloadModules();
+    }
+
+    private static void startNetworkListeners(JNerikConfig config, UserSessionResponder sessionResponder,
+                                              MessageChannel channel) throws IOException {
         IoAcceptor acceptor = new NioSocketAcceptor();
 
         acceptor.getFilterChain().addLast("logger", new LoggingFilter());
         acceptor.getFilterChain().addLast("codec", new ProtocolCodecFilter(
                 new TextLineCodecFactory(Charset.forName("UTF-8"))));
 
-        acceptor.setHandler(new MinaAcceptor(null, null));
+        acceptor.setHandler(new MinaAcceptor(sessionResponder, channel));
         acceptor.getSessionConfig().setReadBufferSize(2048);
         acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 10);
 
         acceptor.bind(config.getListenAddresses());
-
-        modules.unloadModules();
     }
 
 }
