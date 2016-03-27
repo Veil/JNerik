@@ -4,7 +4,9 @@ import net.aphotix.jnerik.core.User;
 import net.aphotix.jnerik.core.UserRegistry;
 
 /**
- * Created by Nathan on 27/03/2016.
+ * The registry used by a {@link UserSessionResponder} to keep track of registered users.
+ *
+ * @author Veil (nathan@aphotix.net).
  */
 class UserSessionRegistry implements UserRegistry {
 

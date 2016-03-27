@@ -5,7 +5,12 @@ import net.aphotix.jnerik.core.io.MessageChannel;
 import net.aphotix.jnerik.core.io.Responder;
 
 /**
- * Created by Nathan on 27/03/2016.
+ * A simple {@link Runnable} Which pulls messages off of the message channel and feeds them to commands from
+ * the command registry.
+ *
+ * If the reader cannot find a valid command for the message it receives then it will send a ERR_UNKNOWNCOMMAND.
+ *
+ * @author Veil (nathan@aphotix.net).
  */
 class MessageReader implements Runnable {
 

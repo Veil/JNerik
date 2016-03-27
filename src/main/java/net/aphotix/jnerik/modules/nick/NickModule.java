@@ -6,7 +6,9 @@ import net.aphotix.jnerik.core.Module;
 import net.aphotix.jnerik.core.UserRegistry;
 
 /**
- * Created by Nathan on 25/03/2016.
+ * The module used to register the NICK command.
+ *
+ * @author Veil (nathan@aphotix.net).
  */
 public class NickModule implements Module {
 

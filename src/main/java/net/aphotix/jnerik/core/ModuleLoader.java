@@ -7,7 +7,9 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by Nathan on 24/03/2016.
+ * Loads all modules set to be included in the IRCd.
+ *
+ * @author Veil (nathan@aphotix.net).
  */
 public class ModuleLoader {
 
@@ -20,6 +22,9 @@ public class ModuleLoader {
         this.loadedModules = new ArrayList<>();
     }
 
+    /**
+     * Loads all modules.
+     */
     public void loadModules() {
         // TODO Work out the best way to load modules either dynamically or specifically
         List<Class<? extends Module>> modules = Arrays.asList(NickModule.class);
@@ -37,6 +42,9 @@ public class ModuleLoader {
         }
     }
 
+    /**
+     * Unloads all previously loaded modules.
+     */
     public void unloadModules() {
         loadedModules.forEach(Module::unload);
     }

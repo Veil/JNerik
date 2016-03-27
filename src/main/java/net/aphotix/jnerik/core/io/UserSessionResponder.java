@@ -8,8 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-/**
- * Created by Nathan on 27/03/2016.
+/**A {@link UserSessionManager} which provides the ability to send responses to those it manages.
+ *
+ * @author Veil (nathan@aphotix.net).
  */
 public class UserSessionResponder implements Responder, UserSessionManager {
 

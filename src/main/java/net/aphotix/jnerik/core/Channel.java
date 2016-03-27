@@ -1,7 +1,9 @@
 package net.aphotix.jnerik.core;
 
 /**
- * Created by Nathan on 25/03/2016.
+ * An IRC channel in which users can reside and chat to one another.
+ *
+ * @author Veil (nathan@aphotix.net).
  */
 public interface Channel {
 }

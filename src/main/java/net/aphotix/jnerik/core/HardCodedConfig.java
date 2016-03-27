@@ -12,4 +12,9 @@ class HardCodedConfig implements JNerikConfig {
     public List<InetSocketAddress> getListenAddresses() {
         return null;
     }
+
+    @Override
+    public String getErrorFormat(int errorCode) {
+        return null;
+    }
 }

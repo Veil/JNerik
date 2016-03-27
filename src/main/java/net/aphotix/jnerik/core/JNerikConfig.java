@@ -4,11 +4,25 @@ import java.net.InetSocketAddress;
 import java.util.List;
 
 /**
- * Created by Nathan on 27/03/2016.
+ * Describes a configuration which JNerik can read
+ *
+ * @author Veil (nathan@aphotix.net).
  */
 public interface JNerikConfig {
 
+    /**
+     * Get the list of addresses the IRCd should listen to.
+     *
+     * @return {@link List} The list of addresses
+     */
     public List<InetSocketAddress> getListenAddresses();
 
-    public String getErrorFormat(int errCode);
+    /**
+     * Get an error format string from the code provided
+     *
+     * @param errorCode The error code
+     *
+     * @return {@link String} The error format string
+     */
+    public String getErrorFormat(int errorCode);
 }

@@ -1,7 +1,9 @@
 package net.aphotix.jnerik.exception;
 
 /**
- * Created by Nathan on 25/03/2016.
+ * Used by command parsers to indicate an incorrect format.
+ *
+ * @author Veil (nathan@aphotix.net).
  */
 public class IllegalCommandFormat extends Exception {
 

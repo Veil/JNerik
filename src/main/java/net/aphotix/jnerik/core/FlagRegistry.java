@@ -1,7 +1,9 @@
 package net.aphotix.jnerik.core;
 
 /**
- * Created by Nathan on 24/03/2016.
+ * A registry of all flags that can be given to a user.
+ *
+ * @author Veil (nathan@aphotix.net).
  */
 public interface FlagRegistry {
 }

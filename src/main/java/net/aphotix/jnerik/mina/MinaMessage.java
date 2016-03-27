@@ -8,9 +8,11 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by Nathan on 26/03/2016.
+ * A basic implementation of an {@link IRCMessage} Which is constructed from a mina received message.
+ *
+ * @author Veil (nathan@aphotix.net).
  */
-public class MinaMessage implements IRCMessage {
+class MinaMessage implements IRCMessage {
 
     private final User user;
     private final String command;

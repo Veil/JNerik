@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Nathan on 24/03/2016.
+ * Convenience class used to instantiate modules with their required injections.
+ *
+ * @author Veil (nathan@aphotix.net).
  */
 public class ModuleConstructor {
 
@@ -22,6 +24,16 @@ public class ModuleConstructor {
         }
     }
 
+    /**
+     * Construct a module from its class, fulfilling any injections required.
+     *
+     * @param module The class of module to instantiate
+     *
+     * @return {@link Module} The instantiated module
+     *
+     * @throws InstantiationException If any injections could not be fulfilled or more than one constructor is defined in the module
+     * or instantiation failed for any other reason
+     */
     public Module construct(Class<? extends Module> module) throws InstantiationException {
         Constructor<?>[] constructors = module.getDeclaredConstructors();
 

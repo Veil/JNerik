@@ -10,7 +10,14 @@ import java.net.InetSocketAddress;
 import java.util.UUID;
 
 /**
- * Created by Nathan on 26/03/2016.
+ * The core IO handler for connecting clients. Uses Apache Mina to accept connections and received messages.
+ *
+ * This implementation simply pushes messages onto a message channel, parsing and interpreting those messages should
+ * be handled by receiving messages through that channel.
+ *
+ * @see MessageChannel#receive()
+ *
+ * @author Veil (nathan@aphotix.net).
  */
 public class MinaAcceptor extends IoHandlerAdapter {
 

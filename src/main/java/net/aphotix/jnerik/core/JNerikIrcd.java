@@ -14,7 +14,9 @@ import java.nio.charset.Charset;
 import java.util.concurrent.Executors;
 
 /**
- * Created by Nathan on 26/03/2016.
+ * The main entry point for the IRCd.
+ *
+ * @author Veil (nathan@aphotix.net).
  */
 public class JNerikIrcd {
 

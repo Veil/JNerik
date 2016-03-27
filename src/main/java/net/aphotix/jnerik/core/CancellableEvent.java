@@ -1,7 +1,10 @@
 package net.aphotix.jnerik.core;
 
 /**
- * Created by Nathan on 26/03/2016.
+ * An event which handles cancel logic only. Any cancellable events (without any internal logic for cancellation) can
+ * extend this class
+ *
+ * @author Veil (nathan@aphotix.net).
  */
 public abstract class CancellableEvent implements Event {
 

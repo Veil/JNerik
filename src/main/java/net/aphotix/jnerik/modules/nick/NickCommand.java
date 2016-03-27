@@ -7,7 +7,9 @@ import net.aphotix.jnerik.exception.IllegalCommandFormat;
 import java.util.List;
 
 /**
- * Created by Nathan on 25/03/2016.
+ * Implements the core logic for the NICK command, allowing a user to request a new nickname.
+ *
+ * @author Veil (nathan@aphotix.net).
  */
 class NickCommand implements Command {
 
@@ -34,23 +36,29 @@ class NickCommand implements Command {
             final NickMessage message = new NickMessage(args, maxNickLength);
             final String requestedNick = message.getRequestedNick();
 
-            final PreNickChangeEvent event = new PreNickChangeEvent(user, requestedNick);
-            events.propogate(event);
-            final String finalNick = event.getNickChangingTo();
+            // We should only fire nick change logic if the user ACTUALLY changed their nickname.
+            if (!requestedNick.equals(user.getNick())) {
 
-            // If the user is remote then we don't have any control over whether they change nickname anyway
-            // Modules which listen for this event and don't handle remote users properly will cause problems
-            // but that's for module authors to figure out..
-            if ((users.getUserByNick(requestedNick) == null && !event.isCancelled()) || user.isRemote()) {
+                final PreNickChangeEvent event = new PreNickChangeEvent(user, requestedNick);
+                events.propagate(event);
+                final String finalNick = event.getNickChangingTo();
 
-                if (!requestedNick.equalsIgnoreCase(finalNick)) {
-                    message.validate(event.getNickChangingTo());
+                // If the user is remote then we don't have any control over whether they change nickname anyway
+                // Modules which listen for this event and don't handle remote users properly will cause problems
+                // but that's for module authors to figure out..
+                if ((users.getUserByNick(requestedNick) == null && !event.isCancelled()) || user.isRemote()) {
+
+                    if (!requestedNick.equalsIgnoreCase(finalNick)) {
+                        message.validate(event.getNickChangingTo());
+                    }
+                    final String originalNick = user.getNick();
+                    user.setNick(finalNick);
+                    responder.sendPropagated(user, NICK_CHANGE_RESPONSE, originalNick, user.getAddress(), finalNick);
+
+                    events.propagate(new PostNickChangeEvent(user, originalNick, finalNick));
+                } else {
+                    responder.sendError(user, ERR_NICKNAMEINUSE, user.getNick(), requestedNick);
                 }
-                user.setNick(finalNick);
-                responder.sendPropagated(user, NICK_CHANGE_RESPONSE, user.getNick(), user.getAddress(), finalNick);
-                events.propogate(new PostNickChangeEvent(user, finalNick));
-            } else {
-                responder.sendError(user, ERR_NICKNAMEINUSE, user.getNick(), requestedNick);
             }
 
         } catch (IllegalCommandFormat e) {

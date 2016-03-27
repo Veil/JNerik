@@ -1,7 +1,9 @@
 package net.aphotix.jnerik.modules.nick;
 
 /**
- * Created by Nathan on 25/03/2016.
+ * Should be thrown when a nickname which does not meet validation requirements is requested.
+ *
+ * @author Veil (nathan@aphotix.net).
  */
 class IllegalNickNameException extends Exception {
 
