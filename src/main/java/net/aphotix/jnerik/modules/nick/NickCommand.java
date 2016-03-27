@@ -1,6 +1,7 @@
 package net.aphotix.jnerik.modules.nick;
 
 import net.aphotix.jnerik.core.*;
+import net.aphotix.jnerik.core.io.Responder;
 import net.aphotix.jnerik.exception.IllegalCommandFormat;
 
 import java.util.List;

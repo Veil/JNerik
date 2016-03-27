@@ -1,10 +1,12 @@
 package net.aphotix.jnerik.mina;
 
 import net.aphotix.jnerik.core.io.MessageChannel;
+import net.aphotix.jnerik.core.io.MessageSender;
 import net.aphotix.jnerik.core.io.UserSessionManager;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
 
+import java.net.InetSocketAddress;
 import java.util.UUID;
 
 /**
@@ -24,7 +26,17 @@ public class MinaAcceptor extends IoHandlerAdapter {
     public void sessionCreated(IoSession session) {
         UUID id = UUID.randomUUID();
         session.setAttribute("id", id);
-        sessionManager.createNew(id, session::write);
+        sessionManager.createNew(id, new MessageSender() {
+            @Override
+            public void send(String message) {
+                session.write(message);
+            }
+
+            @Override
+            public String getConnectionAddress() {
+                return ((InetSocketAddress) session.getRemoteAddress()).getHostString();
+            }
+        });
     }
 
     @Override
