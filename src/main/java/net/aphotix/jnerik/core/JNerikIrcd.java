@@ -1,8 +1,10 @@
 package net.aphotix.jnerik.core;
 
+import net.aphotix.jnerik.core.events.BasicEventRegistry;
 import net.aphotix.jnerik.core.io.MessageChannel;
 import net.aphotix.jnerik.core.io.UserSessionResponder;
 import net.aphotix.jnerik.core.registry.MapBackedCommandRegistry;
+import net.aphotix.jnerik.core.registry.MapBackedFlagRegistry;
 import net.aphotix.jnerik.core.registry.MapBackedModeRegistry;
 import net.aphotix.jnerik.mina.MinaAcceptor;
 import org.apache.mina.core.service.IoAcceptor;
@@ -32,7 +34,8 @@ public class JNerikIRCd {
 
         final CommandRegistry commands = new MapBackedCommandRegistry();
 
-        final ModuleLoader modules = new ModuleLoader(commands, null, new MapBackedModeRegistry(), users, null);
+        final ModuleLoader modules = new ModuleLoader(commands, new MapBackedFlagRegistry(),
+                new MapBackedModeRegistry(), users, new BasicEventRegistry(sessionResponder));
 
         final MessageChannel channel = new QueueBackedMessageChannel();
 
