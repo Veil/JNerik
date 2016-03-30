@@ -23,7 +23,7 @@ import java.util.concurrent.Executors;
  *
  * @author Veil (nathan@aphotix.net).
  */
-public class JNerikIrcd {
+public class JNerikIrcds {
 
     public static void main(String[] args) throws IOException {
         // TODO Load some kind of config.
