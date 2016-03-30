@@ -2,7 +2,8 @@ package net.aphotix.jnerik.core;
 
 import net.aphotix.jnerik.core.events.BasicEventRegistry;
 import net.aphotix.jnerik.core.io.MessageChannel;
-import net.aphotix.jnerik.core.io.UserSessionResponder;
+import net.aphotix.jnerik.core.io.ConnectionSessionResponder;
+import net.aphotix.jnerik.core.io.UserSessionRegistry;
 import net.aphotix.jnerik.core.registry.MapBackedCommandRegistry;
 import net.aphotix.jnerik.core.registry.MapBackedFlagRegistry;
 import net.aphotix.jnerik.core.registry.MapBackedModeRegistry;
@@ -29,8 +30,8 @@ public class JNerikIRCd {
         // TODO Load some kind of config.
         final JNerikConfig config = new HardCodedConfig();
 
-        final UserSessionResponder sessionResponder = new UserSessionResponder(config);
-        final UserRegistry users = sessionResponder.getUserRegistry();
+        final ConnectionSessionResponder sessionResponder = new ConnectionSessionResponder(config);
+        final UserSessionRegistry users = new UserSessionRegistry(sessionResponder);
 
         final CommandRegistry commands = new MapBackedCommandRegistry();
 
@@ -39,7 +40,7 @@ public class JNerikIRCd {
 
         final MessageChannel channel = new QueueBackedMessageChannel();
 
-        final MessageReader reader = new MessageReader(commands, channel, sessionResponder);
+        final MessageReader reader = new MessageReader(commands, users, null, channel, sessionResponder);
 
         Executors.newFixedThreadPool(1).submit(reader);
 
@@ -50,7 +51,7 @@ public class JNerikIRCd {
         modules.unloadModules();
     }
 
-    private static void startNetworkListeners(JNerikConfig config, UserSessionResponder sessionResponder,
+    private static void startNetworkListeners(JNerikConfig config, ConnectionSessionResponder sessionResponder,
                                               MessageChannel channel) throws IOException {
         IoAcceptor acceptor = new NioSocketAcceptor();
 

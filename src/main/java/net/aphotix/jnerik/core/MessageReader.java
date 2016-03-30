@@ -1,8 +1,6 @@
 package net.aphotix.jnerik.core;
 
-import net.aphotix.jnerik.core.io.IRCMessage;
-import net.aphotix.jnerik.core.io.MessageChannel;
-import net.aphotix.jnerik.core.io.Responder;
+import net.aphotix.jnerik.core.io.*;
 
 /**
  * A simple {@link Runnable} Which pulls messages off of the message channel and feeds them to commands from
@@ -17,11 +15,16 @@ class MessageReader implements Runnable {
     private static final int ERR_UNKNOWNCOMMAND = 421;
 
     private final CommandRegistry commands;
+    private final UserSessionRegistry users;
+    private final ServerRegistry servers;
     private final MessageChannel channel;
     private final Responder responder;
 
-    public MessageReader(CommandRegistry commands, MessageChannel channel, Responder responder) {
+    public MessageReader(CommandRegistry commands, UserSessionRegistry users, ServerRegistry servers,
+                         MessageChannel channel, Responder responder) {
         this.commands = commands;
+        this.users = users;
+        this.servers = servers;
         this.channel = channel;
         this.responder = responder;
     }
@@ -34,13 +37,25 @@ class MessageReader implements Runnable {
             try {
                 final IRCMessage message = channel.receive();
                 final Command command = commands.getCommandByName(message.getCommand());
-                final User initiatingUser = message.getInitiatingUser();
+                final Connection initiatingConnection = message.getInitiatingConnection();
 
-                if (command != null) {
-                    command.execute(initiatingUser, message.getArguments(), responder);
-                } else {
-                    responder.sendError(initiatingUser, ERR_UNKNOWNCOMMAND, initiatingUser.getNick(),
-                            message.getCommand());
+                switch (initiatingConnection.getConnectionType()) {
+                    case USER:
+                        handleUserMessage(message, command, users.getUserById(initiatingConnection.getId()));
+                        break;
+                    case UNREGISTERED:
+                        handleUserMessage(message, command, new UserConnection(initiatingConnection, users));
+                        break;
+                    case SERVER:
+                        // If we got the command from a server then we need to find the user by the nick it gave us
+                        // however, we may have never seen this user before so we need to give it the chance to
+                        // register.
+                        User user = users.getUserByNick(message.getCommandNick());
+
+                        if (user == null) {
+                            user = new UserConnection(initiatingConnection, users);
+                        }
+                        handleUserMessage(message, command, user);
                 }
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
@@ -49,5 +64,14 @@ class MessageReader implements Runnable {
             }
         }
 
+    }
+
+    private void handleUserMessage(IRCMessage message, Command command, User user) {
+
+        if (command != null) {
+			command.execute(user, message.getArguments(), responder);
+		} else {
+			responder.sendError(user, ERR_UNKNOWNCOMMAND, user.getNick(), message.getCommand());
+		}
     }
 }

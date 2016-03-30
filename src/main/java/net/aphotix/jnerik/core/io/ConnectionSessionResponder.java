@@ -1,26 +1,26 @@
 package net.aphotix.jnerik.core.io;
 
 import net.aphotix.jnerik.core.JNerikConfig;
+import net.aphotix.jnerik.core.ServerRegistry;
 import net.aphotix.jnerik.core.User;
 import net.aphotix.jnerik.core.UserRegistry;
+import net.aphotix.jnerik.core.registry.MapBackedServerRegistry;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-/**A {@link UserSessionManager} which provides the ability to send responses to those it manages.
+/**A {@link ConnectionSessionManager} which provides the ability to send responses to those it manages.
  *
  * @author Veil (nathan@aphotix.net).
  */
-public class UserSessionResponder implements Responder, UserSessionManager {
+public class ConnectionSessionResponder implements Responder, ConnectionSessionManager {
 
-    private final Map<UUID, UserSession> sessions;
+    private final Map<UUID, Connection> sessions;
     private final JNerikConfig config;
-    private final UserSessionRegistry registry;
 
-    public UserSessionResponder(JNerikConfig config) {
+    public ConnectionSessionResponder(JNerikConfig config) {
         this.config = config;
-        this.registry = new UserSessionRegistry();
         this.sessions = new HashMap<>();
     }
 
@@ -40,8 +40,8 @@ public class UserSessionResponder implements Responder, UserSessionManager {
     }
 
     @Override
-    public void createNew(UUID uid, MessageSender sender) {
-        sessions.put(uid, new UserSession(uid, sender, false, registry));
+    public void createNew(Connection connection) {
+        sessions.put(connection.getId(), connection);
     }
 
     @Override
@@ -50,12 +50,7 @@ public class UserSessionResponder implements Responder, UserSessionManager {
     }
 
     @Override
-    public User getUserFromId(UUID uid) {
-        return sessions.get(uid);
-    }
-
-    @Override
-    public UserRegistry getUserRegistry() {
-        return registry;
+    public Connection getConnection(UUID id) {
+        return sessions.get(id);
     }
 }

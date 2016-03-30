@@ -23,7 +23,7 @@ public interface IRCMessage {
      *
      * @return {@link User} The initiating user
      */
-    public User getInitiatingUser();
+    public Connection getInitiatingConnection();
 
     /**
      * Get the arguments for the command
@@ -31,5 +31,15 @@ public interface IRCMessage {
      * @return {@link List} The arguments
      */
     public List<String> getArguments();
+
+	/**
+     * Gets the nickname of the user who issued this command
+     *
+     * This can be null unless {@link #getInitiatingConnection()#getConnectionType()} returns
+     * {@link net.aphotix.jnerik.core.io.Connection.ConnectionType#SERVER}
+     *
+     * @return {@link String} The nick of the user who issued this command
+     */
+    public String getCommandNick();
 
 }
