@@ -44,7 +44,7 @@ class MessageReader implements Runnable {
                         handleUserMessage(message, command, users.getUserById(initiatingConnection.getId()));
                         break;
                     case UNREGISTERED:
-                        handleUserMessage(message, command, new UserConnection(initiatingConnection, users));
+                        handleUserMessage(message, command, new ConnectionAwareUser(initiatingConnection, users));
                         break;
                     case SERVER:
                         // If we got the command from a server then we need to find the user by the nick it gave us
@@ -53,7 +53,7 @@ class MessageReader implements Runnable {
                         User user = users.getUserByNick(message.getCommandNick());
 
                         if (user == null) {
-                            user = new UserConnection(initiatingConnection, users);
+                            user = new ConnectionAwareUser(initiatingConnection, users);
                         }
                         handleUserMessage(message, command, user);
                 }

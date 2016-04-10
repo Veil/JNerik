@@ -16,7 +16,7 @@ import java.util.UUID;
  */
 public class ConnectionSessionResponder implements Responder, ConnectionSessionManager {
 
-    private final Map<UUID, Connection> sessions;
+    private final Map<UUID, SwitchableConnection> sessions;
     private final JNerikConfig config;
 
     public ConnectionSessionResponder(JNerikConfig config) {
@@ -40,8 +40,8 @@ public class ConnectionSessionResponder implements Responder, ConnectionSessionM
     }
 
     @Override
-    public void createNew(Connection connection) {
-        sessions.put(connection.getId(), connection);
+    public void createNew(UUID id, MessageSender sender) {
+        sessions.put(id, new SwitchableConnection(id, sender, Connection.ConnectionType.UNREGISTERED));
     }
 
     @Override
@@ -52,5 +52,16 @@ public class ConnectionSessionResponder implements Responder, ConnectionSessionM
     @Override
     public Connection getConnection(UUID id) {
         return sessions.get(id);
+    }
+
+    @Override
+    public void registerConnection(UUID id, Connection.ConnectionType type) {
+        final SwitchableConnection connection = sessions.get(id);
+
+        // We have to check this because we may be told to register a user from another server and the connection
+        // type is ConnectionType#SERVER
+        if (connection.getConnectionType() == Connection.ConnectionType.UNREGISTERED) {
+            connection.setConnectionType(type);
+        }
     }
 }

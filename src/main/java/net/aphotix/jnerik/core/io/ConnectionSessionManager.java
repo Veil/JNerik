@@ -12,9 +12,9 @@ public interface ConnectionSessionManager {
     /**
      * Creates a new session for a user
      *
-     * @param connection The new connection to create a session for
+     * @param id The new connection id to create a session for
      */
-    public void createNew(Connection connection);
+    public void createNew(UUID id, MessageSender sender);
 
     /**
      * Destroy a session
@@ -24,4 +24,12 @@ public interface ConnectionSessionManager {
     public void destroy(UUID uid);
 
     public Connection getConnection(UUID id);
+
+	/**
+     * Register a new connection for a previously unregistered connection
+     *
+     * @param id The connection id to update
+     * @param type The type of connection to register as
+     */
+    public void registerConnection(UUID id, Connection.ConnectionType type);
 }

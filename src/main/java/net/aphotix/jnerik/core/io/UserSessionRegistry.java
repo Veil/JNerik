@@ -36,8 +36,13 @@ public class UserSessionRegistry implements UserRegistry {
      * @param newNick The new nickname
      * @param user The user changing nickname or registering
      */
-    public void registerUser(String previousNick, String newNick, UserConnection user) {
-        sessionManager.createNew(user);
+    public void registerUser(String previousNick, String newNick, User user) {
+
+        // Previously unregistered!
+        if (previousNick == null) {
+            sessionManager.registerConnection(user.getId(), Connection.ConnectionType.USER);
+        }
+
         //TODO Other registry stuffs
     }
 }

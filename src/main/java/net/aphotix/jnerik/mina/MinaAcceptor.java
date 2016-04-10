@@ -3,7 +3,6 @@ package net.aphotix.jnerik.mina;
 import net.aphotix.jnerik.core.io.MessageChannel;
 import net.aphotix.jnerik.core.io.MessageSender;
 import net.aphotix.jnerik.core.io.ConnectionSessionManager;
-import net.aphotix.jnerik.core.io.UnregisteredConnection;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
 
@@ -34,7 +33,7 @@ public class MinaAcceptor extends IoHandlerAdapter {
     public void sessionCreated(IoSession session) {
         UUID id = UUID.randomUUID();
         session.setAttribute("id", id);
-        sessionManager.createNew(new UnregisteredConnection(id, new MessageSender() {
+        sessionManager.createNew(id, new MessageSender() {
             @Override
             public void send(String message) {
                 session.write(message);
@@ -44,7 +43,7 @@ public class MinaAcceptor extends IoHandlerAdapter {
             public String getConnectionAddress() {
                 return ((InetSocketAddress) session.getRemoteAddress()).getHostString();
             }
-        }));
+        });
     }
 
     @Override
