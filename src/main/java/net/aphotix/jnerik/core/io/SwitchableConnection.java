@@ -3,7 +3,7 @@ package net.aphotix.jnerik.core.io;
 import java.util.UUID;
 
 /**
- * Created by Nathan on 10/04/2016.
+ * @author Veil (nathan@aphotix.net).
  */
 public class SwitchableConnection implements Connection {
 

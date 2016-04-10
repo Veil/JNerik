@@ -40,7 +40,7 @@ public class JNerikIRCd {
 
         final MessageChannel channel = new QueueBackedMessageChannel();
 
-        final MessageReader reader = new MessageReader(commands, users, null, channel, sessionResponder);
+        final MessageReader reader = new MessageReader(commands, users, channel, sessionResponder);
 
         Executors.newFixedThreadPool(1).submit(reader);
 

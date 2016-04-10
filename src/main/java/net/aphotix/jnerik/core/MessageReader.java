@@ -16,15 +16,13 @@ class MessageReader implements Runnable {
 
     private final CommandRegistry commands;
     private final UserSessionRegistry users;
-    private final ServerRegistry servers;
     private final MessageChannel channel;
     private final Responder responder;
 
-    public MessageReader(CommandRegistry commands, UserSessionRegistry users, ServerRegistry servers,
+    public MessageReader(CommandRegistry commands, UserSessionRegistry users,
                          MessageChannel channel, Responder responder) {
         this.commands = commands;
         this.users = users;
-        this.servers = servers;
         this.channel = channel;
         this.responder = responder;
     }
