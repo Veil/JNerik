@@ -1,6 +1,7 @@
 package net.aphotix.jnerik.core;
 
 import net.aphotix.jnerik.core.io.*;
+import net.aphotix.jnerik.exception.MalformedIRCMessageException;
 
 /**
  * A simple {@link Runnable} Which pulls messages off of the message channel and feeds them to commands from
@@ -57,6 +58,10 @@ class MessageReader implements Runnable {
                 }
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
+            } catch (MalformedIRCMessageException e) {
+                // TODO         Log this, not sure there's much we can do about it really, malformed messages come from
+                // TODO(cont..) servers who haven't provided a nickname for a user performing an action or from a
+                // TODO(cont..) connection type we just don't recognise.
             } catch (RuntimeException e) {
                 e.printStackTrace();
             }

@@ -1,8 +1,8 @@
 package net.aphotix.jnerik.mina;
 
+import net.aphotix.jnerik.core.io.ConnectionSessionManager;
 import net.aphotix.jnerik.core.io.MessageChannel;
 import net.aphotix.jnerik.core.io.MessageSender;
-import net.aphotix.jnerik.core.io.ConnectionSessionManager;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
 
