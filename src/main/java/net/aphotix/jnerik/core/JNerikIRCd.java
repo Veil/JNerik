@@ -1,8 +1,8 @@
 package net.aphotix.jnerik.core;
 
 import net.aphotix.jnerik.core.events.BasicEventRegistry;
-import net.aphotix.jnerik.core.io.MessageChannel;
 import net.aphotix.jnerik.core.io.ConnectionSessionResponder;
+import net.aphotix.jnerik.core.io.MessageChannel;
 import net.aphotix.jnerik.core.io.UserSessionRegistry;
 import net.aphotix.jnerik.core.registry.MapBackedCommandRegistry;
 import net.aphotix.jnerik.core.registry.MapBackedFlagRegistry;

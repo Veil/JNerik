@@ -1,5 +1,6 @@
 package net.aphotix.jnerik.core;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -16,6 +17,10 @@ public interface User {
      */
     public UUID getId();
 
+    public String getName();
+
+    public void setName(String name);
+
     /**
      * Get the nickname for this user
      *
@@ -30,12 +35,36 @@ public interface User {
      */
     public void setNick(String requestedNick);
 
+    public List<UserMode> getModes();
+
+    public void addMode(UserMode mode);
+
+    public void addModes(List<UserMode> modes);
+
+    public void setModes(List<UserMode> modes);
+
+    public void removeMode(UserMode modes);
+
+    public void removeModes(List<UserMode> modes);
+
     /**
      * Get the host address from which this user is connecting from
      *
      * @return {@link String} The host address
      */
     public String getAddress();
+
+    public void setAddress(String address);
+
+    public String getVhost();
+
+    public void setVHost(String vHost);
+
+    public String getServerHost();
+
+    public void setServerHost(String serverHost);
+
+    public long getLatestNickTimestamp();
 
     /**
      * Gets whether this user is connected to this server or not

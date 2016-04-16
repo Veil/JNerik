@@ -33,6 +33,8 @@ public interface Responder {
      */
     public void sendPropagated(User user, String message, Object... params);
 
+    public void sendKill(User user, String comment, Object... params);
+
     /**
      * Send an error to the provided user
      *

@@ -2,6 +2,7 @@ package net.aphotix.jnerik.modules.nick;
 
 import net.aphotix.jnerik.core.CancellableEvent;
 import net.aphotix.jnerik.core.User;
+import net.aphotix.jnerik.core.io.Responder;
 
 import java.util.Objects;
 
@@ -16,10 +17,12 @@ import java.util.Objects;
 public class PreNickChangeEvent extends CancellableEvent {
 
     private final User userChangingNick;
+    private final Responder responder;
 
     private String nickChangingTo;
 
-    public PreNickChangeEvent(User userChangingNick, String nickChangingTo) {
+    public PreNickChangeEvent(User userChangingNick, String nickChangingTo, Responder responder) {
+        this.responder = responder;
         Objects.requireNonNull(userChangingNick);
         Objects.requireNonNull(nickChangingTo);
 
@@ -45,13 +48,7 @@ public class PreNickChangeEvent extends CancellableEvent {
         return nickChangingTo;
     }
 
-    /**
-     * Set the nickname the user will actually change to
-     *
-     * @param newNick The transformed nickname
-     */
-    public void setNickChangingTo(String newNick) {
-        nickChangingTo = newNick;
+    public Responder getResponder() {
+        return responder;
     }
-
 }

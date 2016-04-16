@@ -1,10 +1,7 @@
 package net.aphotix.jnerik.core.io;
 
 import net.aphotix.jnerik.core.JNerikConfig;
-import net.aphotix.jnerik.core.ServerRegistry;
 import net.aphotix.jnerik.core.User;
-import net.aphotix.jnerik.core.UserRegistry;
-import net.aphotix.jnerik.core.registry.MapBackedServerRegistry;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +28,11 @@ public class ConnectionSessionResponder implements Responder, ConnectionSessionM
 
     @Override
     public void sendPropagated(User user, String message, Object... params) {
+
+    }
+
+    @Override
+    public void sendKill(User user, String comment) {
 
     }
 

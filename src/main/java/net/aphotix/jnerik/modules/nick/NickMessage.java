@@ -1,8 +1,11 @@
 package net.aphotix.jnerik.modules.nick;
 
 import net.aphotix.jnerik.exception.IllegalCommandFormat;
+import net.aphotix.jnerik.exception.IllegalRemoteCommandFormat;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Used to parse a NICK command message received from a client.
@@ -14,6 +17,7 @@ import java.util.List;
  */
 class NickMessage {
 
+    private static final int CLIENT_COMMAND_LENGTH = 1;
     private final String requestedNick;
     private final int maxNickLength;
 
@@ -31,7 +35,7 @@ class NickMessage {
     public NickMessage(List<String> args, int maxNickLength) throws IllegalCommandFormat, IllegalNickNameException {
         this.maxNickLength = maxNickLength;
 
-        if (args.size() < 1 && !args.get(0).trim().isEmpty()) {
+        if (args.size() >= CLIENT_COMMAND_LENGTH && !args.get(0).trim().isEmpty()) {
             final String requestedNick = args.get(0).trim();
             validate(requestedNick);
             this.requestedNick = requestedNick;
@@ -67,5 +71,4 @@ class NickMessage {
             throw new IllegalNickNameException("Cannot start nickname with a number");
         }
     }
-
 }

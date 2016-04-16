@@ -1,9 +1,6 @@
 package net.aphotix.jnerik.modules.nick;
 
-import net.aphotix.jnerik.core.CommandRegistry;
-import net.aphotix.jnerik.core.EventRegistry;
-import net.aphotix.jnerik.core.Module;
-import net.aphotix.jnerik.core.UserRegistry;
+import net.aphotix.jnerik.core.*;
 
 /**
  * The module used to register the NICK command.
@@ -17,16 +14,18 @@ public class NickModule implements Module {
     private final CommandRegistry commands;
     private final UserRegistry users;
     private final EventRegistry events;
+    private final ModeRegistry modes;
 
-    public NickModule(CommandRegistry commands, UserRegistry users, EventRegistry events) {
+    public NickModule(CommandRegistry commands, UserRegistry users, EventRegistry events, ModeRegistry modes) {
         this.commands = commands;
         this.users = users;
         this.events = events;
+        this.modes = modes;
     }
 
     @Override
     public void load() {
-        commands.register(NICK_COMMAND, new NickCommand(users, events, 8));
+        commands.register(NICK_COMMAND, new NickCommand(users, modes, events, 8));
     }
 
     @Override

@@ -1,7 +1,6 @@
 package net.aphotix.jnerik.core;
 
 import net.aphotix.jnerik.core.io.Responder;
-import net.aphotix.jnerik.core.io.Server;
 
 import java.util.List;
 
